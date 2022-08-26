@@ -42,33 +42,35 @@ function convertToRoman(num) {
   let roman = "";
 
   // for every digit in arabic number, do:
-  for (let digitPosition = digitsLength; digitPosition > 0; digitPosition--) {
+  for (let digitPosition = digitsLength - 1; digitPosition >= 0; digitPosition--) {
+    //
     // + Extract digits from the decimal number
-    let num = num % Math.pow(10, digitPosition);
-    let digit = Math.floor(num / Math.pow(10, digitPosition - 1));
+    num = num % Math.pow(10, digitPosition + 1);
+    let digit = Math.floor(num / Math.pow(10, digitPosition));
 
     // + Convert each digit to roman number
-    romanPosition = digitPosition - 1;
-    // if the digit == 9, add the the first and last roman number, such as IX
+    // - if the digit == 9, add the the first and last roman number, such as IX
     if (digit == 9) {
-      roman = roman + ROMAN_NUM[romanPosition].first + ROMAN_NUM[romanPosition].last;
+      roman = roman + ROMAN_NUM[digitPosition].first + ROMAN_NUM[digitPosition].last;
     }
-    // if the digit == 4, add the first and middle roman number, such as IV
+
+    // - if the digit == 4, add the first and middle roman number, such as IV
     else if (digit == 4) {
-      roman = roman + ROMAN_NUM[romanPosition].first + ROMAN_NUM[romanPosition].middle;
+      roman = roman + ROMAN_NUM[digitPosition].first + ROMAN_NUM[digitPosition].middle;
     } else {
-      // if the digit >= 5, add the middle roman number (V, L, D, or #V)
-      // according to romanPosition
+      //
+      // - if the digit >= 5, add the middle roman number (V, L, D, or #V)
+      // according to digitPosition
       if (digit >= 5) {
-        roman = roman + ROMAN_NUM[romanPosition].middle;
+        roman = roman + ROMAN_NUM[digitPosition].middle;
       }
       // then add the fist roman number to complete that digit
       for (let i = 0; i < digit % 5; i += 1) {
-        roman = roman + ROMAN_NUM[romanPosition].first;
+        roman = roman + ROMAN_NUM[digitPosition].first;
       }
     }
   }
   return roman;
 }
-// + test
+// + Test
 console.log(convertToRoman(36));
